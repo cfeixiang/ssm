@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.mapper.ItemMapper">
+    <insert id="save">
+        insert into
+          item
+          (name, price, production_date, description, pic)
+            values
+          (#{name},#{price},#{productionDate},#{description},#{pic})
+    </insert>
+    <update id="update">
+        update  item
+        set
+          name=#{name},price=#{price},production_date=#{productionDate},description=#{description},pic=#{pic}
+        where
+          id=#{id}
+    </update>
+    <delete id="delById">
+        delete from item where id=#{id}
+    </delete>
+
+    <select id="findCountByname" resultType="java.lang.Long">
+        select count(*) from item
+        <where>
+            <if test="name !=null and name !=''">
+                name like "%"#{name}"%"
+            </if>
+        </where>
+    </select>
+    <select id="findItemByNameLikeAndLimit" resultType="com.qf.pojo.Item">
+        select * from item
+        <where>
+            <if test="name!=null and name!=''">
+                name like "%"#{name}"%"
+            </if>
+        </where>
+        order by created desc
+        limit #{offset},#{size}
+    </select>
+</mapper>
